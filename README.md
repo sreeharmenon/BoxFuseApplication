@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 boxfuse-sample-java-war-hello
 =============================
 
@@ -21,3 +22,7 @@ Boxfuse Sample Hello World Java application packaged as a war file
 Done!
 
 Open your browser at http://localhost:8888 or simple type ```boxfuse open hello:1.0``` to see your brand new instance in action!
+=======
+# BoxFuseApplication
+BoxFuse
+>>>>>>> 83de3c09aa8e8a7a0621e69493d2ea6c5eab0d4f
