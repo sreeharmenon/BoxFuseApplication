@@ -7,7 +7,7 @@ RUN rm -rf /usr/local/tomcat/webapps/*
 # Copy the WAR file into the Tomcat webapps directory
 COPY hello-1.0.war /usr/local/tomcat/webapps/
 
-# Expose port 8080 for the web server
+# Expose port 8000 for the web server
 EXPOSE 8000
 
 # Start Tomcat
