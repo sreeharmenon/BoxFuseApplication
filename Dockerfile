@@ -5,7 +5,7 @@ FROM tomcat:9-jdk11-openjdk-slim
 RUN rm -rf /usr/local/tomcat/webapps/*
 
 # Copy the WAR file into the Tomcat webapps directory
-COPY hello-1.0.war /usr/local/tomcat/webapps/
+COPY target/hello-1.0.war /usr/local/tomcat/webapps/
 
 # Expose port 8000 for the web server
 EXPOSE 8000
