@@ -1,0 +1,41 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  DOCKER_USERNAME: $(DOCKER_USERNAME)
+  DOCKER_PASSWORD: $(DOCKER_PASSWORD)
+  DOCKER_IMAGE_NAME: 'boxfuse-sample-app'
+  OLD_TAG: 'v40'
+
+stages:
+- stage: BuildAndPush
+  jobs:
+  - job: Build
+    steps:
+    - script: |
+        echo $(DOCKER_PASSWORD) | docker login -u $(DOCKER_USERNAME) --password-stdin
+      displayName: 'Login to DockerHub'
+
+    - script: |
+        docker pull $(DOCKER_USERNAME)/$(DOCKER_IMAGE_NAME):$(OLD_TAG)
+      displayName: 'Pull Docker Image'
+
+    - script: |
+        docker run -d --name temp-container3 $(DOCKER_USERNAME)/$(DOCKER_IMAGE_NAME):$(OLD_TAG)
+        docker exec temp-container3 sh -c "echo '<h1>Modified JSP Application</h1>' > /usr/local/tomcat/webapps/hello/index.jsp"
+        docker commit temp-container3 $(DOCKER_USERNAME)/$(DOCKER_IMAGE_NAME):$(NEW_TAG)
+        docker stop temp-container3
+        docker rm temp-container3
+      displayName: 'Modify JSP and Commit'
+
+    - script: |
+        docker push $(DOCKER_USERNAME)/$(DOCKER_IMAGE_NAME):$(NEW_TAG)
+      displayName: 'Push Docker Image'
+
+    - script: |
+        docker rmi $(DOCKER_USERNAME)/$(DOCKER_IMAGE_NAME):$(OLD_TAG)
+        docker rmi $(DOCKER_USERNAME)/$(DOCKER_IMAGE_NAME):$(NEW_TAG)
+      displayName: 'Cleanup Docker Images'
